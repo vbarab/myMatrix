@@ -5,27 +5,58 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class Matrix {
+
     private int rows;
-    private int collums;
+    private int columns;
     private double[][] value;
 
     public Matrix() {
     }
 
-    public void fillRandom(){
-        value= new double[getRows()][getCollums()];
+    public void printMatrix() {                         //matrix display
+        System.out.println(Arrays.deepToString(getValue()));
+    }
+
+    public void fillRandom() {                          //random filling
+        value = new double[getRows()][getColumns()];
         for (int i = 0; i < value.length; i++) {
             for (int j = 0; j < value[i].length; j++) {
                 Random random = new Random();
-                value[i][j]=random.nextInt(100);
+                value[i][j] = random.nextInt(100);
             }
         }
-        System.out.println(Arrays.deepToString(value));
+
+    }
+
+    public Matrix multiply(Matrix matrixA, Matrix matrixB) {
+        Matrix matrixResult = new Matrix(matrixA.getRows(), matrixB.getColumns());
+        matrixResult.fillRandom();
+        double[][] matrixResultValue = matrixResult.getValue();
+        double[][] matrixAValue = matrixA.getValue();
+        double[][] matrixBValue = matrixB.getValue();
+        int aRows = matrixA.getRows();
+        int aColumns = matrixA.getColumns();
+        int bRows = matrixB.getRows();
+        int bColumns = matrixB.getColumns();
+        for (int i = 0; i < aRows; i++) {
+            for (int j = 0; j < bColumns; j++) {
+                for (int k = 0; k < aColumns; k++) {
+                    matrixResultValue[i][j] += matrixAValue[i][k] * matrixBValue[k][j];
+                }
+
+            }
+        }
+
+        return matrixResult;
     }
 
     public Matrix(int rows, int collums) {
         this.rows = rows;
-        this.collums = collums;
+        this.columns = collums;
+    }
+
+    public double[][] getValue() {
+        return value;
     }
 
     public int getRows() {
@@ -36,16 +67,12 @@ public class Matrix {
         this.rows = rows;
     }
 
-    public int getCollums() {
-        return collums;
+    public int getColumns() {
+        return columns;
     }
 
-    public void setCollums(int collums) {
-        this.collums = collums;
-    }
-
-    public double[][] getValue() {
-        return value;
+    public void setColumns(int columns) {
+        this.columns = columns;
     }
 
     public void setValue(double[][] value) {
